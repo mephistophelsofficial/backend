@@ -17,7 +17,7 @@ class User(
     var hash: String? = null
 
     @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
-    var keys: Key? = null
+    var key: Key? = null
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
     var sessions: Set<Session>? = null

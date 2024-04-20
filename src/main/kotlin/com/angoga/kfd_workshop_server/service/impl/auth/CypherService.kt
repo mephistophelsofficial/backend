@@ -1,6 +1,7 @@
 package com.angoga.kfd_workshop_server.service.impl.auth
 
 
+import com.angoga.kfd_workshop_server.logging.FreelancingLogger
 import java.security.KeyFactory
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -13,7 +14,9 @@ import javax.crypto.Cipher
 
 object CryptoService {
     private fun loadPublicKey(storedKey: String): PublicKey {
+//        FreelancingLogger(this::class.java).info("sadsa123")
         val data = Base64.getDecoder().decode(storedKey)
+//        FreelancingLogger(this::class.java).info("sadsa")
         val spec = PKCS8EncodedKeySpec(data)
         val factory = KeyFactory.getInstance("RSA")
         return factory.generatePublic(spec)

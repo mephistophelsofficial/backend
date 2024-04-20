@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 class Session(
     @Deprecated("Misconception idea")
     @Column(name = "fingerprint")
-    var fingerprint: String,
+    var fingerprint: String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

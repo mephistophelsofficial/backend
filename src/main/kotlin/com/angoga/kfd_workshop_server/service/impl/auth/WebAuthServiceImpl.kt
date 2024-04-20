@@ -49,7 +49,7 @@ class WebAuthServiceImpl(
         val challenge = (1..32)
             .map { chars.random() }
             .joinToString("")
-        val session = Session(request.fingerprint, userService.findEntityByEmail(request.email), challenge, State.OPEN)
+        val session = Session(user = userService.findEntityByEmail(request.email), challenge =  challenge, state = State.OPEN)
         val token = jwtHelper.generateWaitingAccessToken(session.id)
         return WebAuthLoginResponse(session.id.toString(), CryptoService.code(challenge = challenge, publicKeyAsString = keyRepo.findByUser(userService.findEntityByEmail(request.email)).publicKey), token)
     }

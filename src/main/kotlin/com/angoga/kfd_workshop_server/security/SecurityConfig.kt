@@ -36,7 +36,7 @@ class SecurityConfig(
         http.csrf { csrf -> csrf.disable() }
 
         http.authorizeHttpRequests { requests ->
-            requests.requestMatchers("$API_PUBLIC/web_auth/access").hasAnyRole("WAITING")
+            requests.requestMatchers("$API_PUBLIC/web_auth/check_access").hasAnyRole("WAITING")
             requests.requestMatchers("$API_PUBLIC/**").permitAll()
             requests.requestMatchers("$API_VERSION_1/**").hasAnyRole("USER")
         }
