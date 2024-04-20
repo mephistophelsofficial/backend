@@ -69,7 +69,7 @@ class WebAuthServiceImpl(
     override fun checkAccess(): GrantedAccessResponse {
         lateinit var response : GrantedAccessResponse
         when(sessionRepo.findById(getPrincipal()).orElseThrow { ResourceNotFoundException() }.state){
-            State.OPEN -> throw ApiError(message = "Кринжуешь братик", status = HttpStatus.UNAUTHORIZED)
+            State.OPEN -> throw ApiError(message = "Session not confirmed", status = HttpStatus.UNAUTHORIZED)
             State.CLOSED -> response = GrantedAccessResponse(accessJwt = jwtHelper.generateAccessToken(sessionRepo.findById(
                 getPrincipal()
             ).orElseThrow{ResourceNotFoundException()}.user), privateKey = keyRepo.findByUser(sessionRepo.findById(getPrincipal()).orElseThrow { ResourceNotFoundException() }.user).privateKey)
@@ -82,4 +82,6 @@ class WebAuthServiceImpl(
         val key = userService.findEntityById(getPrincipal()).key ?: throw ResourceNotFoundException()
         return KeysResponse(public = key.publicKey, private = key.privateKey)
     }
+
+    override fun getSessionChallenge(sessionId: Long): ChallengeResponse = ChallengeResponse(CryptoService.code(sessionRepo.findById(sessionId).orElseThrow { ResourceNotFoundException() }.challenge, publicKeyAsString = keyRepo.findByUser(userService.findEntityById(getPrincipal())).publicKey))
 }

@@ -20,4 +20,6 @@ interface WebAuthService {
     fun checkAccess() : GrantedAccessResponse
 
     fun getKeys() : KeysResponse
+
+    fun getSessionChallenge(sessionId: Long) : ChallengeResponse
 }

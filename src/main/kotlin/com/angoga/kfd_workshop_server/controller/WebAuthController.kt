@@ -34,4 +34,6 @@ class WebAuthController(
     @GetMapping("/web_auth/get_keys")
     fun getKeys() = service.getKeys()
 
+    @GetMapping("/web_auth/get_session_challenge/{id}")
+    fun getSessionChallenge(@PathVariable id : Long) = service.getSessionChallenge(id)
 }
