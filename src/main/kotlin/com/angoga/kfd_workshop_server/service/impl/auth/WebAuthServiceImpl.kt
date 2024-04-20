@@ -11,10 +11,7 @@ import com.angoga.kfd_workshop_server.errors.SessionExpiredException
 import com.angoga.kfd_workshop_server.model.request.WebAuthGrantAccessRequest
 import com.angoga.kfd_workshop_server.model.request.WebAuthLoginRequest
 import com.angoga.kfd_workshop_server.model.request.WebAuthRegistrationRequest
-import com.angoga.kfd_workshop_server.model.response.FingerprintResponse
-import com.angoga.kfd_workshop_server.model.response.GrantedAccessResponse
-import com.angoga.kfd_workshop_server.model.response.MessageResponse
-import com.angoga.kfd_workshop_server.model.response.WebAuthLoginResponse
+import com.angoga.kfd_workshop_server.model.response.*
 import com.angoga.kfd_workshop_server.service.UserService
 import com.angoga.kfd_workshop_server.service.WebAuthService
 import com.angoga.kfd_workshop_server.util.getPrincipal
@@ -81,7 +78,8 @@ class WebAuthServiceImpl(
         return response
     }
 
-    override fun getKeys() {
-        TODO("Not yet implemented")
+    override fun getKeys(): KeysResponse {
+        val key = userService.findEntityById(getPrincipal()).key ?: throw ResourceNotFoundException()
+        return KeysResponse(public = key.publicKey, private = key.privateKey)
     }
 }
