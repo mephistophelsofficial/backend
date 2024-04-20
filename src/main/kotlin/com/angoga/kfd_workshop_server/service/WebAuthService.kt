@@ -21,4 +21,6 @@ interface WebAuthService {
     fun grantAccess(request: WebAuthGrantAccessRequest) : MessageResponse
 
     fun checkAccess() : GrantedAccessResponse
+
+    fun getKeys()
 }

@@ -80,4 +80,8 @@ class WebAuthServiceImpl(
         }
         return response
     }
+
+    override fun getKeys() {
+        TODO("Not yet implemented")
+    }
 }

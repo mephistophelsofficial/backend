@@ -31,4 +31,7 @@ class WebAuthController(
     @PostMapping("/web_auth/grant_access")
     fun grantAccess(@RequestBody request: WebAuthGrantAccessRequest) = service.grantAccess(request)
 
+    @GetMapping("/web_auth/get_keys")
+    fun getKeys() = service.getKeys()
+
 }
