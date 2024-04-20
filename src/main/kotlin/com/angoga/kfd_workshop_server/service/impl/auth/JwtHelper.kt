@@ -27,6 +27,17 @@ class JwtHelper(
         )
     }
 
+    fun generateWaitingAccessToken(id: Long): String {
+        val authorities = mutableListOf(Authority.WAITING)
+        return jwt.createToken(
+            "userId" to id,
+            "permissions" to emptyList<String>(),
+            "authorities" to authorities,
+            expiration = getAccessTokenExpiration(),
+        )
+    }
+
+
     private fun getAccessTokenExpiration(): Date =
         Instant.now().plus(accessTokenLifetime, ChronoUnit.DAYS).let { Date.from(it) }
 

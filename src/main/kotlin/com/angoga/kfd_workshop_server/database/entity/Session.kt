@@ -1,14 +1,15 @@
 package com.angoga.kfd_workshop_server.database.entity
 
 import jakarta.persistence.*
+import java.time.LocalDateTime
 
 
 @Entity
 @Table(name = "`Session`")
 class Session(
-    @OneToOne
+    @Deprecated("Misconception idea")
     @Column(name = "fingerprint")
-    var key: Key,
+    var fingerprint: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -18,7 +19,10 @@ class Session(
     var challenge : String,
 
     @Column(name = "state")
-    var state : State
+    var state : State,
+
+    @Column(name = "created_at")
+    var createdAt: LocalDateTime? = LocalDateTime.now()
 
     ) : AbstractEntity() {
 }
