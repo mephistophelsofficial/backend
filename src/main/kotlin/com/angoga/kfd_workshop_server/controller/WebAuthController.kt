@@ -16,7 +16,7 @@ class WebAuthController(
     private val service: WebAuthService
 ) {
 
-    @PostMapping("/web_auth/register")
+    @PostMapping("/web_auth/registration")
     fun webAuthRegister(@RequestBody request : WebAuthRegistrationRequest) = service.register(request)
 
     @GetMapping("/public/web_auth/fingerprints/{email}")
