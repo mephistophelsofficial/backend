@@ -8,6 +8,7 @@ import com.angoga.kfd_workshop_server.errors.AlreadyExistsException
 import com.angoga.kfd_workshop_server.errors.ApiError
 import com.angoga.kfd_workshop_server.errors.ResourceNotFoundException
 import com.angoga.kfd_workshop_server.errors.WebAuthnNotEnabledException
+import com.angoga.kfd_workshop_server.logging.FreelancingLogger
 import com.angoga.kfd_workshop_server.model.request.web_authn.WebAuthGrantAccessRequest
 import com.angoga.kfd_workshop_server.model.request.web_authn.WebAuthLoginRequest
 import com.angoga.kfd_workshop_server.model.request.web_authn.WebAuthRegistrationRequest
@@ -37,8 +38,10 @@ class WebAuthServiceImpl(
     @Autowired
     private val jwtHelper: JwtHelper,
     @Value("\${web_authn.session.lifetime}")
-    private val sessionLifetime: Long = 60 //in seconds
+    private val sessionLifetime: Long = 60, //in seconds
 ) : WebAuthService {
+
+    private val logger = FreelancingLogger(this.javaClass)
 
     @Transactional
     override fun register(request: WebAuthRegistrationRequest): MessageResponse {

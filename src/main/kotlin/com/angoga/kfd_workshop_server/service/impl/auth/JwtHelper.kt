@@ -1,6 +1,7 @@
 package com.angoga.kfd_workshop_server.service.impl.auth
 
 import com.angoga.kfd_workshop_server.database.entity.User
+import com.angoga.kfd_workshop_server.logging.FreelancingLogger
 import com.angoga.kfd_workshop_server.security.model.Authority
 import com.angoga.kfd_workshop_server.security.JwtParser
 import org.springframework.beans.factory.annotation.Value
@@ -29,6 +30,9 @@ class JwtHelper(
 
     fun generateWaitingAccessToken(id: Long): String {
         val authorities = mutableListOf(Authority.WAITING)
+        val logger = FreelancingLogger(this.javaClass)
+        logger.info(authorities[0].authority.authority)
+        logger.info("$id")
         return jwt.createToken(
             "userId" to id,
             "permissions" to emptyList<String>(),

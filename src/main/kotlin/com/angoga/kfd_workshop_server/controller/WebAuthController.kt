@@ -21,8 +21,8 @@ class WebAuthController(
     @PostMapping("/public/web_auth/login")
     fun webAuthLogin(@RequestBody request: WebAuthLoginRequest) = service.login(request)
 
-    @PostMapping("/public/web_auth/check_access")
-    fun webAuthLogin() = service.checkAccess()
+    @PostMapping("/waiting/web_auth/check_access")
+    fun webAuthCheckAccess() = service.checkAccess()
 
     @PostMapping("/web_auth/grant_access")
     fun grantAccess(@RequestBody request: WebAuthGrantAccessRequest) = service.grantAccess(request)
