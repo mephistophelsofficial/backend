@@ -13,10 +13,6 @@ class Key(
     @Column(name = "private_key", nullable = false, length = 5000)
     var privateKey: String,
 
-    @Deprecated("Misconception idea")
-    @Column(name = "fingerprint")
-    var fingerprint : String? = null,
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     var user: User? = null

@@ -7,10 +7,6 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "`Session`")
 class Session(
-    @Deprecated("Misconception idea")
-    @Column(name = "fingerprint")
-    var fingerprint: String? = null,
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     var user: User,

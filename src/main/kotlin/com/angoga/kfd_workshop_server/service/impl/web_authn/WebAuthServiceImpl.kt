@@ -1,4 +1,4 @@
-package com.angoga.kfd_workshop_server.service.impl.auth
+package com.angoga.kfd_workshop_server.service.impl.web_authn
 
 import com.angoga.kfd_workshop_server.database.entity.Key
 import com.angoga.kfd_workshop_server.database.entity.Session
@@ -13,6 +13,7 @@ import com.angoga.kfd_workshop_server.model.request.WebAuthRegistrationRequest
 import com.angoga.kfd_workshop_server.model.response.*
 import com.angoga.kfd_workshop_server.service.UserService
 import com.angoga.kfd_workshop_server.service.WebAuthService
+import com.angoga.kfd_workshop_server.service.impl.auth.JwtHelper
 import com.angoga.kfd_workshop_server.util.getPrincipal
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -43,12 +44,6 @@ class WebAuthServiceImpl(
         return MessageResponse("Successful WebAuthn registration!")
     }
 
-    @Deprecated("Misconception idea")
-    override fun getFingerprints(email: String): FingerprintResponse {
-        TODO("Для лучших времен")
-        //return FingerprintResponse(keyRepo.findByUser(userService.findEntityByEmail(email)).map { it.fingerprint })
-    }
-
     override fun login(request: WebAuthLoginRequest): WebAuthLoginResponse {
         val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
         val challenge = (1..32)
@@ -57,6 +52,7 @@ class WebAuthServiceImpl(
         val session =
             Session(user = userService.findEntityByEmail(request.email), challenge = challenge, state = State.OPEN)
         val token = jwtHelper.generateWaitingAccessToken(session.id)
+        sessionRepo.save(session)
         return WebAuthLoginResponse(
             session.id.toString(),
             CryptoService.code(
@@ -102,16 +98,4 @@ class WebAuthServiceImpl(
             }
         return response
     }
-
-    override fun getKeys(): KeysResponse {
-        val key = userService.findEntityById(getPrincipal()).key ?: throw ResourceNotFoundException()
-        return KeysResponse(public = key.publicKey, private = key.privateKey)
-    }
-
-    override fun getSessionChallenge(sessionId: Long): ChallengeResponse = ChallengeResponse(
-        CryptoService.code(
-            sessionRepo.findById(sessionId).orElseThrow { ResourceNotFoundException() }.challenge,
-            publicKeyAsString = keyRepo.findByUser(userService.findEntityById(getPrincipal())).publicKey
-        )
-    )
 }

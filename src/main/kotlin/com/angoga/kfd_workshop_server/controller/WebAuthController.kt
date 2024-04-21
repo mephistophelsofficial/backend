@@ -19,9 +19,6 @@ class WebAuthController(
     @PostMapping("/web_auth/registration")
     fun webAuthRegister(@RequestBody request : WebAuthRegistrationRequest) = service.register(request)
 
-    @GetMapping("/public/web_auth/fingerprints/{email}")
-    fun getFingerprints(@PathVariable email : String) = service.getFingerprints(email)
-
     @PostMapping("/public/web_auth/login")
     fun webAuthLogin(@RequestBody request: WebAuthLoginRequest) = service.login(request)
 
@@ -30,10 +27,4 @@ class WebAuthController(
 
     @PostMapping("/web_auth/grant_access")
     fun grantAccess(@RequestBody request: WebAuthGrantAccessRequest) = service.grantAccess(request)
-
-    @GetMapping("/web_auth/get_keys")
-    fun getKeys() = service.getKeys()
-
-    @GetMapping("/web_auth/get_session_challenge/{id}")
-    fun getSessionChallenge(@PathVariable id : Long) = service.getSessionChallenge(id)
 }

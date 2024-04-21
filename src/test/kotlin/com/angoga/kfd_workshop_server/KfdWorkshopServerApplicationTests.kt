@@ -1,8 +1,7 @@
 package com.angoga.kfd_workshop_server
 
-import com.angoga.kfd_workshop_server.service.impl.auth.CryptoService
+import com.angoga.kfd_workshop_server.service.impl.web_authn.CryptoService
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
 
 class KfdWorkshopServerApplicationTests {
 	@Test

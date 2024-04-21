@@ -1,4 +1,4 @@
-package com.angoga.kfd_workshop_server.service.impl.auth
+package com.angoga.kfd_workshop_server.service.impl.web_authn
 
 
 import org.springframework.stereotype.Service

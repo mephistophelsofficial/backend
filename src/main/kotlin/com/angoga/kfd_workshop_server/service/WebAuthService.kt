@@ -10,16 +10,10 @@ interface WebAuthService {
 
     fun register(request: WebAuthRegistrationRequest) : MessageResponse
 
-    @Deprecated("Misconception idea")
-    fun getFingerprints(email: String) : FingerprintResponse
-
     fun login(request: WebAuthLoginRequest) : WebAuthLoginResponse
 
     fun grantAccess(request: WebAuthGrantAccessRequest) : MessageResponse
 
     fun checkAccess() : GrantedAccessResponse
 
-    fun getKeys() : KeysResponse
-
-    fun getSessionChallenge(sessionId: Long) : ChallengeResponse
 }
