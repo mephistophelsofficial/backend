@@ -25,7 +25,7 @@ class AuthController(
     }
 
     @PostMapping("/registration")
-    fun register(@Valid @RequestBody request: RegistrationRequest): UserResponse {
+    fun register(@Valid @RequestBody request: RegistrationRequest): LoginResponse {
         return authService.register(request)
     }
 

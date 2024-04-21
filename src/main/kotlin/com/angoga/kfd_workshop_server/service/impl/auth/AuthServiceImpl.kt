@@ -32,9 +32,9 @@ class AuthServiceImpl(
 
     @Modifying
     @Transactional
-    override fun register(request: RegistrationRequest): UserResponse {
+    override fun register(request: RegistrationRequest): LoginResponse {
         val user = userService.createUser(request)
-        return mapper.asResponse(user)
+        return LoginResponse(jwtHelper.generateAccessToken(user))
     }
 
     private fun loginUser(request: LoginRequest): User {

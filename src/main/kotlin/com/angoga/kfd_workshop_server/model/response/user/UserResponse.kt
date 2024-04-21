@@ -7,4 +7,5 @@ open class UserResponse(
     id: Long,
     val email: String,
     val name: String,
+
 ): AbstractResponse(id)

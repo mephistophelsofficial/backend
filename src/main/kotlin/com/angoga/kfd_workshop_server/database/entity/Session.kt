@@ -22,7 +22,7 @@ class Session(
     var state : State,
 
     @Column(name = "created_at")
-    var createdAt: LocalDateTime? = LocalDateTime.now()
+    var createdAt: LocalDateTime = LocalDateTime.now()
 
     ) : AbstractEntity() {
 }

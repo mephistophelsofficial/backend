@@ -7,5 +7,5 @@ import com.angoga.kfd_workshop_server.model.response.user.UserResponse
 
 interface AuthService {
     fun login(request: LoginRequest): LoginResponse
-    fun register(request: RegistrationRequest): UserResponse
+    fun register(request: RegistrationRequest): LoginResponse
 }
