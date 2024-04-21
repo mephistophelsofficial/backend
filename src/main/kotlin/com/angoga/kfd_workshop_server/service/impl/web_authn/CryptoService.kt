@@ -12,9 +12,7 @@ import javax.crypto.Cipher
 @Service
 object CryptoService {
     private fun loadPublicKey(storedKey: String): PublicKey {
-//        FreelancingLogger(this::class.java).info("sadsa123")
         val data = Base64.getDecoder().decode(storedKey)
-//        FreelancingLogger(this::class.java).info("sadsa")
         val spec = X509EncodedKeySpec(data)
         val factory = KeyFactory.getInstance("RSA")
         return factory.generatePublic(spec)

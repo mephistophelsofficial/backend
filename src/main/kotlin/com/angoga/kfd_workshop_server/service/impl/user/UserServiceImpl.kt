@@ -8,7 +8,6 @@ import com.angoga.kfd_workshop_server.mappers.UserMapper
 import com.angoga.kfd_workshop_server.model.request.RegistrationRequest
 import com.angoga.kfd_workshop_server.model.response.user.UserResponse
 import com.angoga.kfd_workshop_server.service.UserService
-import org.springframework.context.annotation.Lazy
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 

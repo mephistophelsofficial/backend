@@ -1,10 +1,11 @@
 package com.angoga.kfd_workshop_server.service
 
-import com.angoga.kfd_workshop_server.model.request.WebAuthGrantAccessRequest
-import com.angoga.kfd_workshop_server.model.request.WebAuthLoginRequest
-import com.angoga.kfd_workshop_server.model.request.WebAuthRegistrationRequest
+import com.angoga.kfd_workshop_server.model.request.web_authn.WebAuthGrantAccessRequest
+import com.angoga.kfd_workshop_server.model.request.web_authn.WebAuthLoginRequest
+import com.angoga.kfd_workshop_server.model.request.web_authn.WebAuthRegistrationRequest
 import com.angoga.kfd_workshop_server.model.response.*
-import java.net.http.HttpResponse
+import com.angoga.kfd_workshop_server.model.response.web_authn.GrantedAccessResponse
+import com.angoga.kfd_workshop_server.model.response.web_authn.WebAuthLoginResponse
 
 interface WebAuthService {
 
