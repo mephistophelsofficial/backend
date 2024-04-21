@@ -3,7 +3,6 @@ package com.angoga.kfd_workshop_server.mappers
 import com.angoga.kfd_workshop_server.database.entity.User
 import com.angoga.kfd_workshop_server.model.request.RegistrationRequest
 import com.angoga.kfd_workshop_server.model.response.user.UserResponse
-import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Component
 
 

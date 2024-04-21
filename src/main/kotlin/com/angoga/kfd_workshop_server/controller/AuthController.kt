@@ -3,7 +3,6 @@ package com.angoga.kfd_workshop_server.controller
 import com.angoga.kfd_workshop_server.model.request.LoginRequest
 import com.angoga.kfd_workshop_server.model.request.RegistrationRequest
 import com.angoga.kfd_workshop_server.model.response.LoginResponse
-import com.angoga.kfd_workshop_server.model.response.user.UserResponse
 import com.angoga.kfd_workshop_server.service.AuthService
 import com.angoga.kfd_workshop_server.util.API_PUBLIC
 import jakarta.validation.Valid

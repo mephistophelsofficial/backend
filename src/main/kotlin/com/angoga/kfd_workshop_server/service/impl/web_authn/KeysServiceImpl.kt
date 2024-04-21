@@ -1,7 +1,7 @@
 package com.angoga.kfd_workshop_server.service.impl.web_authn
 
 import com.angoga.kfd_workshop_server.errors.ResourceNotFoundException
-import com.angoga.kfd_workshop_server.model.response.KeysResponse
+import com.angoga.kfd_workshop_server.model.response.web_authn.KeysResponse
 import com.angoga.kfd_workshop_server.service.KeysService
 import com.angoga.kfd_workshop_server.service.UserService
 import com.angoga.kfd_workshop_server.util.getPrincipal

@@ -3,7 +3,6 @@ package com.angoga.kfd_workshop_server.security
 import com.angoga.kfd_workshop_server.errors.ApiError
 import com.angoga.kfd_workshop_server.errors.ExceptionResolver
 import com.angoga.kfd_workshop_server.util.API_PUBLIC
-import com.angoga.kfd_workshop_server.util.API_VERSION_1
 import com.angoga.kfd_workshop_server.util.containsAnyPath
 import org.springframework.context.annotation.Lazy
 import org.springframework.http.HttpStatus

@@ -1,6 +1,6 @@
 package com.angoga.kfd_workshop_server.service
 
-import com.angoga.kfd_workshop_server.model.response.ChallengeResponse
+import com.angoga.kfd_workshop_server.model.response.web_authn.ChallengeResponse
 
 interface SessionService {
 

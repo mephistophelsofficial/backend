@@ -1,4 +1,4 @@
-package com.angoga.kfd_workshop_server.model.response
+package com.angoga.kfd_workshop_server.model.response.web_authn
 
 data class WebAuthLoginResponse(
     val sessionId: String,

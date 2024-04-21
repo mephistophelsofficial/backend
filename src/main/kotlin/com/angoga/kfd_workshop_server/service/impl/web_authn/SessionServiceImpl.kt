@@ -3,7 +3,7 @@ package com.angoga.kfd_workshop_server.service.impl.web_authn
 import com.angoga.kfd_workshop_server.database.repository.KeyDao
 import com.angoga.kfd_workshop_server.database.repository.SessionDao
 import com.angoga.kfd_workshop_server.errors.ResourceNotFoundException
-import com.angoga.kfd_workshop_server.model.response.ChallengeResponse
+import com.angoga.kfd_workshop_server.model.response.web_authn.ChallengeResponse
 import com.angoga.kfd_workshop_server.service.SessionService
 import com.angoga.kfd_workshop_server.service.UserService
 import com.angoga.kfd_workshop_server.util.getPrincipal

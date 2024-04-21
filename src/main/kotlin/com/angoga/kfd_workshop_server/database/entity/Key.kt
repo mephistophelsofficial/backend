@@ -1,7 +1,6 @@
 package com.angoga.kfd_workshop_server.database.entity
 
 import jakarta.persistence.*
-import java.security.PrivateKey
 
 @Entity
 @Table(name = "`Key`")

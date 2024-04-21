@@ -1,5 +1,6 @@
 package com.angoga.kfd_workshop_server.database.entity
 
+import com.angoga.kfd_workshop_server.util.enums.SessionState
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -15,13 +16,10 @@ class Session(
     var challenge : String,
 
     @Column(name = "state")
-    var state : State,
+    var sessionState : SessionState,
 
     @Column(name = "created_at")
     var createdAt: LocalDateTime = LocalDateTime.now()
 
     ) : AbstractEntity() {
-}
-enum class State{
-    OPEN, CLOSED, EXPIRED
 }
