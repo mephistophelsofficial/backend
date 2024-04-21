@@ -5,6 +5,6 @@ import com.angoga.kfd_workshop_server.database.entity.User
 
 interface KeyDao : AppRepository<Key> {
 
-    fun findByUser(user: User) : Key
+    fun findByUser(user: User) : Key?
 
 }

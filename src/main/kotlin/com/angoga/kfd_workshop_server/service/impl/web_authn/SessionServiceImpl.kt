@@ -22,7 +22,7 @@ class SessionServiceImpl(
     override fun getSessionChallenge(sessionId: Long): ChallengeResponse = ChallengeResponse(
         CryptoService.code(
             sessionRepo.findById(sessionId).orElseThrow { ResourceNotFoundException() }.challenge,
-            publicKeyAsString = keyRepo.findByUser(userService.findEntityById(getPrincipal())).publicKey
+            publicKeyAsString = keyRepo.findByUser(userService.findEntityById(getPrincipal()))!!.publicKey
         )
     )
 }

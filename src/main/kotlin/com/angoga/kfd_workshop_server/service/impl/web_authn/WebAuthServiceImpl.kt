@@ -4,8 +4,10 @@ import com.angoga.kfd_workshop_server.database.entity.Key
 import com.angoga.kfd_workshop_server.database.entity.Session
 import com.angoga.kfd_workshop_server.database.repository.KeyDao
 import com.angoga.kfd_workshop_server.database.repository.SessionDao
+import com.angoga.kfd_workshop_server.errors.AlreadyExistsException
 import com.angoga.kfd_workshop_server.errors.ApiError
 import com.angoga.kfd_workshop_server.errors.ResourceNotFoundException
+import com.angoga.kfd_workshop_server.errors.WebAuthnNotEnabledException
 import com.angoga.kfd_workshop_server.model.request.web_authn.WebAuthGrantAccessRequest
 import com.angoga.kfd_workshop_server.model.request.web_authn.WebAuthLoginRequest
 import com.angoga.kfd_workshop_server.model.request.web_authn.WebAuthRegistrationRequest
@@ -38,6 +40,9 @@ class WebAuthServiceImpl(
 ) : WebAuthService {
 
     override fun register(request: WebAuthRegistrationRequest): MessageResponse {
+        if(keyRepo.findByUser(userService.findEntityById(getPrincipal())) != null){
+            throw AlreadyExistsException()
+        }
         keyRepo.save(
             Key(
                 publicKey = request.publicKey,
@@ -49,6 +54,9 @@ class WebAuthServiceImpl(
     }
 
     override fun login(request: WebAuthLoginRequest): WebAuthLoginResponse {
+        if(keyRepo.findByUser(userService.findEntityById(getPrincipal())) == null){
+            throw WebAuthnNotEnabledException()
+        }
         val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
         val challenge = (1..32)
             .map { chars.random() }
@@ -61,7 +69,7 @@ class WebAuthServiceImpl(
             session.id.toString(),
             CryptoService.code(
                 challenge = challenge,
-                publicKeyAsString = keyRepo.findByUser(userService.findEntityByEmail(request.email)).publicKey
+                publicKeyAsString = keyRepo.findByUser(userService.findEntityByEmail(request.email))!!.publicKey
             ),
             token
         )
@@ -95,7 +103,7 @@ class WebAuthServiceImpl(
                     ),
                         privateKey = keyRepo.findByUser(
                             sessionRepo.findById(getPrincipal()).orElseThrow { ResourceNotFoundException() }.user
-                        ).privateKey
+                        )!!.privateKey
                     )
 
                 SessionState.EXPIRED -> throw ApiError(message = "Session expired!", status = HttpStatus.EXPECTATION_FAILED)
