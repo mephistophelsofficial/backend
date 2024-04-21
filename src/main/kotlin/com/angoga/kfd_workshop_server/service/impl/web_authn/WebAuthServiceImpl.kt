@@ -45,7 +45,7 @@ class WebAuthServiceImpl(
 
     @Transactional
     override fun register(request: WebAuthRegistrationRequest): MessageResponse {
-        if(keyRepo.findByUser(userService.findEntityById(getPrincipal())) != null){
+        if (keyRepo.findByUser(userService.findEntityById(getPrincipal())) != null) {
             throw AlreadyExistsException()
         }
         keyRepo.save(
@@ -60,7 +60,7 @@ class WebAuthServiceImpl(
 
     @Transactional
     override fun login(request: WebAuthLoginRequest): WebAuthLoginResponse {
-        if(keyRepo.findByUser(userService.findEntityByEmail(request.email)) == null) {
+        if (keyRepo.findByUser(userService.findEntityByEmail(request.email)) == null) {
             throw WebAuthnNotEnabledException()
         }
         val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -70,7 +70,13 @@ class WebAuthServiceImpl(
 
         println("Web-Auth-login (Соль): $challenge")
 
-        val session = sessionRepo.save(Session(user = userService.findEntityByEmail(request.email), challenge = challenge, sessionState = SessionState.OPEN))
+        val session = sessionRepo.save(
+            Session(
+                user = userService.findEntityByEmail(request.email),
+                challenge = challenge,
+                sessionState = SessionState.OPEN
+            )
+        )
         val token = jwtHelper.generateWaitingAccessToken(session.id)
         return WebAuthLoginResponse(
             session.id.toString(),
@@ -103,21 +109,25 @@ class WebAuthServiceImpl(
     override fun checkAccess(): GrantedAccessResponse {
         lateinit var response: GrantedAccessResponse
         val session = sessionRepo.findById(getPrincipal()).orElseThrow { ResourceNotFoundException() }
-        if (session.createdAt.isBefore(LocalDateTime.now().minusSeconds(sessionLifetime)))
-            when (session.sessionState) {
-                SessionState.OPEN -> throw ApiError(message = "Session not confirmed", status = HttpStatus.UNAUTHORIZED)
-                SessionState.CLOSED -> response =
-                    GrantedAccessResponse(accessJwt = jwtHelper.generateAccessToken(sessionRepo.findById(
-                        getPrincipal()
-                    ).orElseThrow { ResourceNotFoundException() }.user
+        if (session.createdAt.isBefore(LocalDateTime.now().minusSeconds(sessionLifetime))) {
+            sessionRepo.save(session.apply { sessionState = SessionState.EXPIRED })
+        }
+        when (session.sessionState) {
+            SessionState.OPEN -> throw ApiError(message = "Session not confirmed", status = HttpStatus.UNAUTHORIZED)
+            SessionState.CLOSED -> response =
+                GrantedAccessResponse(
+                    accessJwt = jwtHelper.generateAccessToken(
+                        sessionRepo.findById(
+                            getPrincipal()
+                        ).orElseThrow { ResourceNotFoundException() }.user
                     ),
-                        privateKey = keyRepo.findByUser(
-                            sessionRepo.findById(getPrincipal()).orElseThrow { ResourceNotFoundException() }.user
-                        )!!.privateKey
-                    )
+                    privateKey = keyRepo.findByUser(
+                        sessionRepo.findById(getPrincipal()).orElseThrow { ResourceNotFoundException() }.user
+                    )!!.privateKey
+                )
 
-                SessionState.EXPIRED -> throw ApiError(message = "Session expired!", status = HttpStatus.EXPECTATION_FAILED)
-            }
+            SessionState.EXPIRED -> throw ApiError(message = "Session expired!", status = HttpStatus.EXPECTATION_FAILED)
+        }
         return response
     }
 }
