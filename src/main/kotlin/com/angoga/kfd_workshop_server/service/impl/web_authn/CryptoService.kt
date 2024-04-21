@@ -18,7 +18,7 @@ object CryptoService {
         return factory.generatePublic(spec)
     }
 
-    fun code(challenge: String, publicKeyAsString: String) : String{
+    fun code(challenge: String, publicKeyAsString: String): String {
         val publicKey = loadPublicKey(publicKeyAsString)
         val cipher = Cipher.getInstance("RSA")
         cipher.init(Cipher.ENCRYPT_MODE, publicKey)

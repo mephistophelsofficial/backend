@@ -60,13 +60,15 @@ class WebAuthServiceImpl(
 
     @Transactional
     override fun login(request: WebAuthLoginRequest): WebAuthLoginResponse {
-        if(keyRepo.findByUser(userService.findEntityByEmail(request.email)) == null){
+        if(keyRepo.findByUser(userService.findEntityByEmail(request.email)) == null) {
             throw WebAuthnNotEnabledException()
         }
         val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
         val challenge = (1..32)
             .map { chars.random() }
             .joinToString("")
+
+        println("Web-Auth-login (Соль): $challenge")
 
         val session = sessionRepo.save(Session(user = userService.findEntityByEmail(request.email), challenge = challenge, sessionState = SessionState.OPEN))
         val token = jwtHelper.generateWaitingAccessToken(session.id)
@@ -82,6 +84,7 @@ class WebAuthServiceImpl(
 
     @Transactional
     override fun grantAccess(request: WebAuthGrantAccessRequest): MessageResponse {
+        println("Web-Auth-grantAccess (Попытка расшифровки): ${request.solvedChallenge}")
         val session = sessionRepo.findById(request.sessionId.toLong()).orElseThrow { ResourceNotFoundException() }
         if (session.challenge != request.solvedChallenge) {
             throw ApiError("Bad challenge")
