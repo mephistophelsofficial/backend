@@ -40,6 +40,7 @@ class WebAuthServiceImpl(
     private val sessionLifetime: Long = 60 //in seconds
 ) : WebAuthService {
 
+    @Transactional
     override fun register(request: WebAuthRegistrationRequest): MessageResponse {
         if(keyRepo.findByUser(userService.findEntityById(getPrincipal())) != null){
             throw AlreadyExistsException()
@@ -56,7 +57,7 @@ class WebAuthServiceImpl(
 
     @Transactional
     override fun login(request: WebAuthLoginRequest): WebAuthLoginResponse {
-        if(keyRepo.findByUser(userService.findEntityById(getPrincipal())) == null){
+        if(keyRepo.findByUser(userService.findEntityByEmail(request.email)) == null){
             throw WebAuthnNotEnabledException()
         }
         val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -76,6 +77,7 @@ class WebAuthServiceImpl(
         )
     }
 
+    @Transactional
     override fun grantAccess(request: WebAuthGrantAccessRequest): MessageResponse {
         val session = sessionRepo.findById(request.sessionId.toLong()).orElseThrow { ResourceNotFoundException() }
         if (session.challenge != request.solvedChallenge) {
@@ -91,6 +93,7 @@ class WebAuthServiceImpl(
         return MessageResponse("Access granted")
     }
 
+    @Transactional
     override fun checkAccess(): GrantedAccessResponse {
         lateinit var response: GrantedAccessResponse
         val session = sessionRepo.findById(getPrincipal()).orElseThrow { ResourceNotFoundException() }

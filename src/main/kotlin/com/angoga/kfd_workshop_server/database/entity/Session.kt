@@ -21,5 +21,4 @@ class Session(
     @Column(name = "created_at")
     var createdAt: LocalDateTime = LocalDateTime.now()
 
-    ) : AbstractEntity() {
-}
+    ) : AbstractEntity()
