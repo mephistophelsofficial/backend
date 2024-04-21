@@ -4,7 +4,6 @@ import com.angoga.kfd_workshop_server.service.impl.auth.CryptoService
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
-@SpringBootTest
 class KfdWorkshopServerApplicationTests {
 	@Test
 	fun cryptoTest() {
