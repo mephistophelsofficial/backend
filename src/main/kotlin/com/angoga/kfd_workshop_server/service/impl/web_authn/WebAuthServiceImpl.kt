@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Service
@@ -48,15 +49,15 @@ class WebAuthServiceImpl(
         return MessageResponse("Successful WebAuthn registration!")
     }
 
+    @Transactional
     override fun login(request: WebAuthLoginRequest): WebAuthLoginResponse {
         val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
         val challenge = (1..32)
             .map { chars.random() }
             .joinToString("")
-        val session =
-            Session(user = userService.findEntityByEmail(request.email), challenge = challenge, sessionState = SessionState.OPEN)
+
+        val session = sessionRepo.save(Session(user = userService.findEntityByEmail(request.email), challenge = challenge, sessionState = SessionState.OPEN))
         val token = jwtHelper.generateWaitingAccessToken(session.id)
-        sessionRepo.save(session)
         return WebAuthLoginResponse(
             session.id.toString(),
             CryptoService.code(
